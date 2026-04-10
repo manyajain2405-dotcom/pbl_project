@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>STYQLO</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: linear-gradient(to right, #ffdde1, #ee9ca7);
+      text-align: center;
+      padding: 50px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      width: 300px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #ff4b5c;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #e84352;
+    }
+
+    .card {
+      background: #fff;
+      padding: 10px;
+      margin: 10px auto;
+      width: 250px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
+    img {
+  height: 200px;
+  object-fit: cover;
+}
+  </style>
+</head>
+
+<body>
+
+<h1>STYQLO 👗</h1>
+
+<div class="container">
+
+<label>Occasion:</label>
+<select id="occasion">
+  <option value="party">Party</option>
+  <option value="college">College</option>
+</select>
+
+<label>Style:</label>
+<select id="style">
+  <option value="casual">Casual</option>
+  <option value="modern">Modern</option>
+</select>
+
+<label>Weather:</label>
+<select id="weather">
+  <option value="hot">Hot</option>
+  <option value="cold">Cold</option>
+</select>
+
+<label>Body Type:</label>
+<select id="body">
+  <option value="slim">Slim</option>
+  <option value="curvy">Curvy</option>
+</select>
+
+<button onclick="getOutfit()">Get Outfit</button>
+
+</div>
+
+<h2>Suggestions</h2>
+<div id="result"></div>
+
+<script>
+function getOutfit() {
+
+  const occasion = document.getElementById("occasion").value;
+  const style = document.getElementById("style").value;
+  const weather = document.getElementById("weather").value;
+  const body = document.getElementById("body").value;
+
+  fetch("http://127.0.0.1:5000/recommend", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      occasion, style, weather, body
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    
+
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = "";
+    const images = {
+  "Red Dress + Heels": "https://i.pinimg.com/1200x/6e/26/74/6e2674245ddd3ef2287afdfcec5f5141.jpg",
+  "Black Jumpsuit + Accessories": "https://i.pinimg.com/1200x/4a/58/d3/4a58d39b19967d4914e6af7f4b628cc5.jpg",
+  "Traditional Kurti + Earrings": "https://i.pinimg.com/736x/3a/ae/9f/3aae9feaa5a680a2470e5afb8f6d76f5.jpg",
+  "Long Dress + Flats": "https://i.pinimg.com/1200x/8e/92/da/8e92daee5a40e5bf6cd11edba51caa27.jpg",
+  "T-shirt + Shorts": "https://i.pinimg.com/736x/3a/23/8c/3a238ca4d10a9141180704157cb12deb.jpg",
+  "Cotton Dress + Sneakers": "https://i.pinimg.com/736x/41/ec/53/41ec5335136d0545e708474723925270.jpg",
+  "Jeans + Hoodie": "https://i.pinimg.com/1200x/a4/25/29/a425296e36f93196e4ede5da87f7c2d1.jpg",
+  "Jacket + Top + Pants": "https://i.pinimg.com/736x/10/6f/2b/106f2bbc8e4120408a05f61d3bdc4b2b.jpg",
+  "High Waist Jeans + Top": "https://i.pinimg.com/736x/f5/e9/47/f5e947c2d87ca63eaa9e2484d7aa298b.jpg",
+  "Crop Top + Jeans": "https://i.pinimg.com/736x/62/ca/a7/62caa715b28a9164e988e36798f084b8.jpg",
+  "Oversized T-shirt + Cargo Pants": "https://i.pinimg.com/736x/40/85/19/408519d5d8f40d7659f1be09f8371389.jpg",
+  "Loose T-shirt + High Waist Jeans": "https://i.pinimg.com/736x/e5/be/ec/e5beecfa1db51528c92dabccb0d7ae6b.jpg",
+  "Flowy Top + Straight Pants": "https://i.pinimg.com/736x/68/ec/06/68ec06733dc3ec2408c7941048abf9ab.jpg",
+  "Tunic + Leggings": "https://i.pinimg.com/1200x/0c/bb/fe/0cbbfeef490d6b030075540b995cb88a.jpg",
+  "Long Sweater + Leggings": "https://i.pinimg.com/736x/3f/60/e1/3f60e13010ebaf98101f3871c84929fa.jpg",
+  "Hoodie + Straight Pants": "https://i.pinimg.com/736x/2f/72/f1/2f72f10767c88734f982abae7589e14f.jpg",
+  "Shirt + Jeans": "https://i.pinimg.com/736x/5c/76/2e/5c762ed0eca0e75af261c8ee937c8bd3.jpg",
+  "Tank Top + Skirt": "https://i.pinimg.com/1200x/fb/e8/b9/fbe8b9ae595852449afd0d231f9bdbfe.jpg",
+  "High Waist Jeans + Tshirt": "https://i.pinimg.com/736x/52/65/49/526549b9d9e0d6f6875874f6e627f464.jpg",
+  "Wrap Top + Pants": "https://i.pinimg.com/1200x/e9/f2/1e/e9f21e9ba361188b0f1c3f8813309e75.jpg",
+  "Fitted Top + Jacket + Jeans": "https://i.pinimg.com/736x/00/de/e3/00dee3f831954d638fc44f6d66c3d3d1.jpg",
+  "Sweater + High Waist Pants": "https://i.pinimg.com/736x/17/3c/80/173c80802bfc44ece08ddc75cbea24d9.jpg",
+  "Layered Outfit + Boots": "https://i.pinimg.com/736x/3e/76/ff/3e76ff3fb7c3fca7403405f3666237dd.jpg",
+  "Long Coat + Top + Pants": "https://i.pinimg.com/736x/fb/56/66/fb5666b981d17b12e0d11ddf361cbc70.jpg",
+  "Sweater + Straight Pants": "https://i.pinimg.com/control1/736x/23/91/ca/2391ca8820e39c39fa41c85cd8eb5d43.jpg",
+  "Layered Kurti + Jeans": "https://i.pinimg.com/736x/9d/37/d5/9d37d58ffcfd1faf24a617f1ff1c8133.jpg",
+  "Black Dress + Heels": "https://i.pinimg.com/736x/52/a7/6c/52a76c3877709404d088294fc7bcfb52.jpg",
+  "Crop Top + Skirt": "https://i.pinimg.com/1200x/49/98/03/4998034c0342e8126585257c3c5517bc.jpg",
+  "Wrap Dress + Heels": "https://i.pinimg.com/1200x/c7/4c/12/c74c122ec24723c1e2da0b5ec4e84af0.jpg",
+  "A-line Dress + Belt": "https://i.pinimg.com/1200x/c9/18/27/c91827cd562e81928ca8d39dd16ff5cf.jpg",
+  "Jumpsuit + Heels": "https://i.pinimg.com/736x/3b/b0/9f/3bb09f8380eced305c7bd5680f90c385.jpg",
+  "Fitted Outfit + Layers": "https://i.pinimg.com/736x/29/d8/8f/29d88f14a6776d64b6e70035d56bf5a8.jpg",
+  "Jacket + Dress + Boots": "https://i.pinimg.com/1200x/68/da/0a/68da0a53987de895b9940c23323f6533.jpg",
+  "Leather Jacket + Skirt": "https://i.pinimg.com/736x/3a/05/86/3a05867ad4a6133030aa78e5b2d8edea.jpg",
+  "Long Coat + Dress": "https://i.pinimg.com/736x/18/3c/54/183c54f61b85860d55f2dd54ea2d155e.jpg",
+  "Layered Dress + Jacket": "https://i.pinimg.com/736x/fa/aa/34/faaa3477ccc1b19d5647a461d08da15e.jpg",
+  "Jumpsuit + Jacket": "https://i.pinimg.com/736x/95/4f/de/954fde999685d37b5d4f1e4fcd7e9037.jpg",
+  "Denim Shorts + Cute Top": "https://i.pinimg.com/1200x/a9/5b/7f/a95b7fff1adae377b48e9297ad506338.jpg",
+  "Flowy Dress + Sneakers": "https://i.pinimg.com/736x/83/88/4c/83884cd0561896cb64f391e506ee8e72.jpg",
+  "Loose Tshirt + Skirt": "https://i.pinimg.com/1200x/b2/64/91/b26491038c9ff223bfb22f0fc2cce953.jpg",
+  "Sweater + Skirt": "https://i.pinimg.com/736x/3c/2a/53/3c2a5391769fbcf7368ada3940f90ed7.jpg",
+  "Jacket + Jeans": "https://i.pinimg.com/736x/e5/c7/ba/e5c7baa88ddd95b4dc860417d0611225.jpg",
+  "Hoodie + Mini Skirt": "https://i.pinimg.com/736x/72/22/5e/72225e85d89231e8df06dbcd33403ae2.jpg",
+  "Long Sweater + Boots": "https://i.pinimg.com/1200x/eb/79/6f/eb796fb6e56c115673fb27d52737da1b.jpg",
+  "Layered Dress + Blazer": "https://i.pinimg.com/1200x/e2/0d/50/e20d5030fa369e8187ca209215986083.jpg"
+ };
+    const links = {
+      "Red Dress + Heels": ["https://lazostore.in/products/the-little-red-dress?srsltid=AfmBOoofTChrDopFSSXRpi53DuOary1Q4aJOS6VnHxJ9nw6mvoo2kkai","https://www.mochishoes.com/st-search?q=black%20heels"],
+      "Black Jumpsuit + Accessories": ["https://www2.hm.com/en_in/productpage.1328880001.html?crawl&utm_source=google&utm_medium=cpc&utm_campaign=mkt_in%7Cmpl_google%7Clng_eng%7Catc_activity%7City_brand%7Cobj_omni-sales%7Ccpt_shopping%7Cdct_combined%7Cmi_ingu06gp3aa5&utm_term=&gad_source=1&gad_campaignid=22815753764&gbraid=0AAAAADvrmzRxqy3CEGQe98Iu81zjOw8dy&gclid=Cj0KCQjwm6POBhCrARIsAIG58CIF37HrQGn-jwrL7ZvINyBVXPng7bZD00us6A6GAotoqqGnxBkOu_8aAgFqEALw_wcB"],
+      "Traditional Kurti + Earrings": ["https://nanaki.co.in/products/white-cream-aaina-kurti?variant=45421962100926&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&utm_source=google&utm_medium=cpc&utm_campaign=VM_Pmax_Feed_Catchall_20Aug25&gad_source=1&gad_campaignid=22919862860&gbraid=0AAAAApf5anfhvFlFXXV1tSuEo2V5j7rEi&gclid=Cj0KCQjwm6POBhCrARIsAIG58CLre3_oJFchcOsrq4L5iSIhDDzcOdOf5h_VtXsU2D_rk8HAH42Wvr4aAtBmEALw_wcB","https://www.biba.in/white-alloy-drop-and-danglers/8905641999350.html?nbsp=true&mf_campaignname_click=22140723243&gclickId_identifier=Cj0KCQjwm6POBhCrARIsAIG58CIUrnHKcA5fAE3UAi8-EilHSZm_kOMQh7N2858LNVy73V4ulRyo-r0aAj_PEALw_wcB&utm_source=Google&gad_source=1&gad_campaignid=22140727878&gbraid=0AAAAADjsdBuDjFs6rCujGUmP0-qgwdkup&gclid=Cj0KCQjwm6POBhCrARIsAIG58CIUrnHKcA5fAE3UAi8-EilHSZm_kOMQh7N2858LNVy73V4ulRyo-r0aAj_PEALw_wcB"],
+      "Long Dress + Flats": ["https://www.savana.com/landing/details/backless-a-line-dress-2081522?pgType=1&gad_source=1&utm_campaign=23171809571__&detail_type=dpa&utm_medium=ppc&biz_type=ppc&channel=google&network=x&vid=16&gad_campaignid=23166593412&gclid=Cj0KCQjwm6POBhCrARIsAIG58CJNq-loiMoWPO35U6wNgDsMQBQF4mhfbzpHUC6zeboO2UAjEGESZs8aApH7EALw_wcB&ad_id=&short_link_uid=DE97207409E4405AB034B1D35CADC6FB&adset_id=&gbraid=0AAAAACeGMblC_dOZ7JcEpKFFOttIZU5Kc&placement=&keyword=&campaign_id=23171809571&utm_source=google&ucid=5099B57202CB47E89C1B1496A42D6870&short_key=1qmkxx&utm_content=dpa","https://www.nykaafashion.com/shoetopia-women-cream-solid-flats/p/8681373?adsource=shopping_india&skuId=8681373&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R1vartybLYppVM9_BLxeAlFh&gclid=Cj0KCQjwm6POBhCrARIsAIG58CI8r9RqA1nYu7soDNwc-vpnY5dsNwRVBUMuTjh3dPgb3FmnGlsTIXwaApBxEALw_wcB"],
+      "T-shirt + Shorts": ["https://www.nykaafashion.com/h-m-women-blue-fitted-cotton-t-shirt/p/25157579?adsource=shopping_india&skuId=25156920&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R1vartybLYppVM9_BLxeAlFh&gclid=Cj0KCQjwm6POBhCrARIsAIG58CLSEvlMjYt-y6NjJtViJHpKJ9FGY6lmCc6lBzNuDaWhH_8bI2ga3MoaAq5yEALw_wcB","https://www.nykaafashion.com/globus-women-navy-blue-solid-shorts/p/19419994?adsource=shopping_india&skuId=19419994&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R1vartybLYppVM9_BLxeAlFh&gclid=Cj0KCQjwm6POBhCrARIsAIG58CLAeVHVjHs-fCxrw4m0u28so06LZyN9nuECwTvhV3-zywlfAZmp6BsaArEFEALw_wcB"],
+      "Cotton Dress + Sneakers": ["https://newme.asia/product/green-halter-neck-schiffli-mini-dress?gad_campaignid=23039497815&gclid=Cj0KCQjwm6POBhCrARIsAIG58CIh9vBIrDg5yn-G_W_0BjC_uFN69XXzj3lZiARh3H08UA0VSPxiDysaAlv5EALw_wcB&gbraid=0AAAAAoy-PQfUey99pVCHrCb1rYyyIu94S&gad_source=1&utm_source=google&utm_campaign=Shopping_Campaign_Quantacus_Test_NEWME_Feed_CG&utm_medium=paid","https://www.nykaafashion.com/puma-smashic-comfort-casual-sneakers-beige/p/22781061?adsource=shopping_india&skuId=22780571&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_BrandFunded_Bucket1&gad_source=1&gad_campaignid=22256168375&gbraid=0AAAAAC968R3KhLFd1ditgJazpKQYE4Mrb&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI2JETscmOLxm-1qGpJXOvGz6gWMPpiplbrdjWW_CgH6QmM6ZzTBqzRoCZtUQAvD_BwE"],
+      "Jeans + Hoodie": ["https://offduty.in/products/grunge-edge-double-button-high-waisted-denim?variant=41669666799713&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&utm_source=google&utm_medium=cpc&utm_campaign=23693870069&utm_content=&utm_term=&gad_source=1&gad_campaignid=23688559584&gbraid=0AAAABCuigPtwrXVZaAVpNZ6KAtNrY22jM&gclid=Cj0KCQjwm6POBhCrARIsAIG58CKDV4yXG5zxtoSSh302f7aROzSdILkoNpZ10wMJ4qGoNSdg7LJYF70aAmwLEALw_wcB","https://www.nykaafashion.com/bonkers-corner-women-red-solid-hoodie/p/21881562?adsource=shopping_india&skuId=21880954&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R1vartybLYppVM9_BLxeAlFh&gclid=Cj0KCQjwm6POBhCrARIsAIG58CK5qIOm81LzTRyDs0vTpDJTvKYDdj-PFaKU-yxv3UZrhkaqxKW0w1caAvs_EALw_wcB"],
+      "Jacket + Top + Pants": ["https://littleboxindia.com/products/suede-brown-button-down-full-sleeve-jacket?gad_source=1&gad_campaignid=18713761356&gbraid=0AAAAAoiHIsfDzvHVoGp6h06KJFdwgUJRB&gclid=Cj0KCQjwm6POBhCrARIsAIG58CJqA5DbbkuHZWg8Utdwaq9ZXOOSGRNtqnYz_SUWje01qCq6VLAf5SAaAhQ-EALw_wcB","https://www.nykaafashion.com/broadstar-womens-off-white-straight-fit-pleated-korean-trouser/p/24055136?adsource=shopping_india&skuId=24055012&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_ATC_MC&gad_source=1&gad_campaignid=22067988239&gbraid=0AAAAAC968R0UzOEHDdck59TuVSuAj7bke&gclid=Cj0KCQjwm6POBhCrARIsAIG58CK-YmPFCsb2aaVzGWP_HRDPsrQB28nlEEZKeXTW5UccGkUNH40hwu0aAqaGEALw_wcB"],
+      "Fitted Outfit + Layers": ["https://newme.asia/product/solid-bodycon-maxi-dress?utm_medium=paid&gbraid=0AAAAAoy-PQfUey99pVCHrCb1rYyyIu94S&gclid=Cj0KCQjwm6POBhCrARIsAIG58CJTe2fvLVnf8KxAN_F-Tw9brOirb2NsLxKmucFVTfL_Tlk6F-mpuDoaAiF9EALw_wcB&utm_source=google&gad_campaignid=23039497815&utm_campaign=Shopping_Campaign_Quantacus_Test_NEWME_Feed_CG&gad_source=1"],
+      "High Waist Jeans + Top": ["https://bluer.co.in/products/blr3-high-rise-straight-jeans?variant=47925454700776&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gad_source=1&gad_campaignid=23700322707&gbraid=0AAAAApPqVk7lwJwDGAKD5V-rUTMyZp4_4&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI2GrEZjyWcVL2vL1YuzYF3JDB-OlqsbYF-z67rK3jWWe41bGmBoxdBoCHOwQAvD_BwE","https://newme.asia/product/solid-full-sleeve-tshirt-19?gclid=CjwKCAjw-dfOBhAjEiwAq0RwI8jlFwA6pyLJwDOjeJxugNMwLVUiZ8oDPrBbEU5i2MtPwgY3ejqOLBoCCjoQAvD_BwE&utm_medium=paid&utm_campaign=Shopping_Campaign_Quantacus_Test_NEWME_Feed_CG&gad_source=1&gbraid=0AAAAAoy-PQfxE5UHQdvutLZ3YP7urk4Qk&utm_source=google&gad_campaignid=23039497815"],
+      "Wrap Top + Pants": ["https://littleboxindia.com/products/collar-wrap-ruched-bowknot-long-sleeve-top-in-navy-blue?gad_source=1&gad_campaignid=18713761356&gbraid=0AAAAAoiHIsd7l1_BIA79ToiNAPLAzjYja&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI6tpEmO2F7nBxrdhGP-S_123u0oypycURJ1jBdhrEwbHkDMMrhnOlxoCtPMQAvD_BwE","https://oyela.in/products/contour-waist-pleated-pants-beige-oy956?variant=50543428108562&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gad_source=1&gad_campaignid=21407505268&gbraid=0AAAAAptx4jHUhuZlAs3Y6IliyJrYc0qRu&gclid=CjwKCAjw-dfOBhAjEiwAq0RwIzc3_6VsWGPNF4I7sr445TCNE2vzHmzmU3ou9Nfx6XNKxEunVHlvHxoCBJ0QAvD_BwE"],
+      "Fitted Top + Jacket + Jeans": ["https://newme.asia/product/solid-full-sleeve-tshirt-19?gclid=CjwKCAjw-dfOBhAjEiwAq0RwI8jlFwA6pyLJwDOjeJxugNMwLVUiZ8oDPrBbEU5i2MtPwgY3ejqOLBoCCjoQAvD_BwE&utm_medium=paid&utm_campaign=Shopping_Campaign_Quantacus_Test_NEWME_Feed_CG&gad_source=1&gbraid=0AAAAAoy-PQfxE5UHQdvutLZ3YP7urk4Qk&utm_source=google&gad_campaignid=23039497815","https://www.nykaafashion.com/h-m-women-black-zip-through-hoodie/p/24951614?adsource=shopping_india&skuId=24951378&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R17_yEi__KRc9GUibAVPzjZ1&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI-z5uzc80_wfrKYqbvA-sGzcx1rSzwGcjkKArb-A2OojnwIkJFaKrhoC944QAvD_BwE","https://offduty.in/products/grunge-edge-double-button-high-waisted-denim?variant=41669666799713&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&utm_source=google&utm_medium=cpc&utm_campaign=23619797647&utm_content=&utm_term=&gad_source=1&gad_campaignid=23609615976&gbraid=0AAAABCuigPv7F3UEo10Cgvf70R9ZsupYJ&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI7sKDc4yGQ4ZJuRlxtFJIaDjMQ2V4cm_y18Z1QAuhNJ5hLLy5CU88xoCD5wQAvD_BwE"],
+      "Crop Top + Jeans": ["https://offduty.in/products/grunge-edge-double-button-high-waisted-denim?variant=41669666799713&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&utm_source=google&utm_medium=cpc&utm_campaign=23619797647&utm_content=&utm_term=&gad_source=1&gad_campaignid=23609615976&gbraid=0AAAABCuigPv7F3UEo10Cgvf70R9ZsupYJ&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI7sKDc4yGQ4ZJuRlxtFJIaDjMQ2V4cm_y18Z1QAuhNJ5hLLy5CU88xoCD5wQAvD_BwE","https://oyela.in/products/sweetheart-neck-crop-top?variant=49650532122898&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&utm_source=google_ads&utm_medium=cpc&utm_campaign=[ADC]_PM_Feed_Only_All_Categories[09-09-2025]&gad_source=1&gad_campaignid=22995137475&gbraid=0AAAAAptx4jFfmLc2SKF40ut_wWQX_4LOd&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI4iKVEz5PoRhxz7taeo0-KW-1E7OvhZy6s4KEyW2RR3Ii5qTnlBpgRoC9lEQAvD_BwE"],
+      "Oversized T-shirt + Cargo Pants": ["https://www.thesouledstore.com/product/pink-panther-pink-trouble-women-oversized-tshirts?nsbp=true&gad_source=1&gad_campaignid=22719796213&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI2BOMRxsic8qBbQ1JiBwOQL1T-B4uqM2xoGpCJq9BV92xRlNofXmYxoC2bIQAvD_BwE","https://www.thesouledstore.com/product/solids-olive-brown-straight-fit-women-pants?nsbp=true&srsltid=AfmBOorHetpVAs4H3jSk37UC1oostrJjvOYbDwGtacoYVTrmW7L6NCZBCDg"],
+      "Loose T-shirt + High Waist Jeans": ["https://www.thesouledstore.com/product/women-relaxed-fit-t-shirts-tss-originals-by-the-sea?nsbp=true&srsltid=AfmBOoqgsROOMvsG057UwkDbo9NBG6wwNoH7K5YgJb_xBYcINvBk-YQ--sc","https://newme.asia/product/light-blue-high-rise-wide-leg-jeans-16?utm_medium=paid&gad_source=1&gbraid=0AAAAAoy-PQfxE5UHQdvutLZ3YP7urk4Qk&utm_source=google&utm_campaign=Shopping_Campaign_Quantacus_Test_NEWME_Feed_CG&gad_campaignid=23039497815&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI5iBeq-S2pzRH53YXACfHCq6Gm9m-DnVi8v_Y3MndoTaJ042MQpQdxoCQGoQAvD_BwE"],
+      "Flowy Top + Straight Pants": ["https://leaclothingco.com/products/briar-white-georgette-ruffled-boho-blouse?variant=47865495060722&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&utm_source=google&utm_medium=paid&utm_campaign=23329521016&utm_content=&utm_term=&gadid=&gad_source=1&gad_campaignid=23320439703&gbraid=0AAAAApQ0pBvTAcff8GRP4GuqA2aYE4D7k&gclid=CjwKCAjw-dfOBhAjEiwAq0RwIxKfhqYrEUebXxERbw-m1u5-rewkHj_1vvVnrmR671kCcnJIN52oJxoCHYUQAvD_BwE","https://oyela.in/products/wide-belt-loop-pleated-pants-wine-oy975?variant=50543431188754&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&utm_source=google_ads&utm_medium=cpc&utm_campaign=[ADC]_SHP_Generic_Product[01-09-2025]&gad_source=1&gad_campaignid=22975727923&gbraid=0AAAAAptx4jHAS6raLrjhKr6bTAhflr-rC&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI3j-d_4rdiA4JXbvGVPxOLNHsxpHucNwHO_dbJ80JlUu25qZJ3X5YRoCcWQQAvD_BwE"],
+      "Tunic + Leggings": ["https://www.westside.com/products/utsa-off-white-pintuck-detail-cotton-tunic-301046387?variant=44930100723765&gad_source=1&gad_campaignid=21055267358&gbraid=0AAAAAC8H_7ee7jQ55owSETZGH7HU0r8tt&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI-QQufk4V3tRKBUus9TIfsVGjTPhWKn0WeWz_btw844-abPnNaGFqRoCHxcQAvD_BwE","https://newme.asia/product/black-solid-high-rise-leggings-436?utm_medium=paid&gad_campaignid=23039497815&utm_campaign=Shopping_Campaign_Quantacus_Test_NEWME_Feed_CG&utm_source=google&gad_source=1&gclid=CjwKCAjw-dfOBhAjEiwAq0RwIyp0iTeL6CpEioWGWqOxjICjttQ7wMWuUrWuJQHvs-F8J3cS4dk2jxoCd1cQAvD_BwE&gbraid=0AAAAAoy-PQfxE5UHQdvutLZ3YP7urk4Qk"],
+      "Long Sweater + Leggings": ["https://www.myntra.com/sweaters/bebe/bebe-women-striped-longline-pullover-sweater/36339669/buy?utm_source=dms_google&utm_medium=dms_pmax_cpc&utm_campaign=dms_google_pmax_cpc_Catchall_ios_SOK&keyword=&matchtype=&target=&placement=&gad_source=1&gad_campaignid=21729182585&gbraid=0AAAAADMPudBvTxVsdRDVj61MwG1vIPCMo&gclid=CjwKCAjw-dfOBhAjEiwAq0RwIyXehXT1MeXHW5dgw6lyFZ-GbIWgDamhhEti34B0mFXEjyC2i3XNgRoCGKwQAvD_BwE","https://www.myntra.com/leggings/mango/mango-women-black-solid-ankle-length-leggings/17269020/buy?utm_source=dms_google&utm_medium=dms_pmax_cpc&utm_campaign=dms_google_pmax_cpc_Catchall_ios_SOK&keyword=&matchtype=&target=&placement=&gad_source=1&gad_campaignid=21729182585&gbraid=0AAAAADMPudBvTxVsdRDVj61MwG1vIPCMo&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI4zSX082MllBonEBwVV0WjBY9_kkNXALLyK9z-8qTKUpLYFXALePLxoCD4MQAvD_BwE"],
+      "Hoodie + Straight Pants": ["https://www.savana.com/landing/details/casual-number-printed-hoodie-1888402?pgType=1&gad_source=1&utm_campaign=22837575763__&detail_type=dpa&utm_medium=ppc&biz_type=ppc&channel=google&network=x&vid=260&gad_campaignid=22833689405&gclid=CjwKCAjw-dfOBhAjEiwAq0RwIzDUtf5iJBsTxZoxDvbKyKwCg647amL5guTUamIWgJAm9DbvejycshoCGWkQAvD_BwE&ad_id=&short_link_uid=5F5B37DC55664BC7AD18FBF8BF9B87D5&adset_id=&gbraid=0AAAAACeGMblq_kXsHtiyhq1lpNY4MaM3O&placement=&keyword=&campaign_id=22837575763&utm_source=google&ucid=F3AC5C1E2CBA4DBFB78DF9C9BD1DF7FC&short_key=6xravs&utm_content=dpa","https://newme.asia/product/black-solid-mid-rise-trousers?gbraid=0AAAAAoy-PQfxE5UHQdvutLZ3YP7urk4Qk&utm_campaign=Shopping_Campaign_Quantacus_Test_NEWME_Feed_CG&utm_source=google&utm_medium=paid&gad_campaignid=23039497815&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI1bWX7JOH2m_xhPeVW4wvYJuCEt6zfvtXqFTOWM-yql8rhuJaaLfrxoCnsgQAvD_BwE&gad_source=1"],
+      "Shirt + Jeans": ["https://www.nykaafashion.com/h-m-women-blue-fitted-shirt/p/25329981?adsource=shopping_india&skuId=25329463&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R17_yEi__KRc9GUibAVPzjZ1&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI-2JaU93s_l9AoyAS54qcp9UbW31DgUPCSLscdFPX0nophEjITuWCxoChpMQAvD_BwE","https://bluer.co.in/products/slubbed-effect-straight-fit-jeans-1?variant=48086963519720&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gad_source=1&gad_campaignid=23700322707&gbraid=0AAAAApPqVk7lwJwDGAKD5V-rUTMyZp4_4&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI9BnPtaFm59h1uKSUfxEU4pjzvmVOg06gfH4X65yl88DsN-rjrfp6xoC1hkQAvD_BwE"],
+      "Tank Top + Skirt": ["https://www.nykaafashion.com/gap-grey-women-s-slim-logo-t-shirt/p/22538434?adsource=shopping_india&skuId=22537893&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R17_yEi__KRc9GUibAVPzjZ1&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI1YJMhKYKQoLpl-5CeEkBfvk54s13Igjma_T8p-B93W6STg3aritsBoCieoQAvD_BwE","https://littleboxindia.com/products/suede-low-rise-ruched-layered-mini-skirt-in-black?gad_source=1&gad_campaignid=18713761356&gbraid=0AAAAAoiHIsd7l1_BIA79ToiNAPLAzjYja&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI_zvzHgOMm97PQR7OpsIB-MW6o07IehJ8SA2fKBDbw-vXg9MwA1zoBoCUsAQAvD_BwE"],
+      "High Waist Jeans + Tshirt": ["https://www.nykaafashion.com/off-duty-india-blue-women-loose-fit-mid-waist-jeans/p/23775738?adsource=shopping_india&skuId=23775156&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R17_yEi__KRc9GUibAVPzjZ1&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI1LNKtv2mt-NCCIxuUyMm4nhTVN28052BgLfBwsSX4vQ8X_67HhHSRoCaXMQAvD_BwE","https://offduty.in/products/newport-printed-t-shirt?variant=42516619427937&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&utm_source=google&utm_medium=cpc&utm_campaign=23693870069&utm_content=&utm_term=&gad_source=1&gad_campaignid=23688559584&gbraid=0AAAABCuigPvjS_aWt4NsZHYMLddEIupoh&gclid=CjwKCAjw-dfOBhAjEiwAq0RwIwLCx3d4--ymsqLHpHV8Idv7t3lSIiruQ37uw97_mS9qnmRkEBf0bxoCERcQAvD_BwE"],
+      "Sweater + High Waist Pants": ["https://www.nykaafashion.com/only-women-white-floral-sweater/p/21881647?adsource=shopping_india&skuId=21881647&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R17_yEi__KRc9GUibAVPzjZ1&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI2BQGDV3NRVtkf2hFupdf1sPh6QnLx7AXlMEeouF5pY2GFzYxuFadBoCvGMQAvD_BwE","https://littleboxindia.com/products/black-high-waist-pleated-wide-leg-flowy-trousers?gad_source=1&gad_campaignid=18713761356&gbraid=0AAAAAoiHIsd7l1_BIA79ToiNAPLAzjYja&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI4qlsa3ZeDzmWg-R7JD6LTKcLgad5DboZB7AGhjk2rc6q7TFze1wuBoC2PgQAvD_BwE"],
+      "Layered Outfit + Boots": ["https://www.myntra.com/dresses/pookiie/pookiie-checked-woollen-pinafore-mini-dress/38171497/buy?storeContext=fwd&utm_source=dms_google&utm_medium=dms_pmax_cpc&utm_campaign=dms_google_pmax_cpc_Catchall_ios_SOK&keyword=&matchtype=&target=&placement=&gad_source=1&gad_campaignid=21729182585&gbraid=0AAAAADMPudBvTxVsdRDVj61MwG1vIPCMo&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI-kNmbXnhNhxkdOSx8EUS9ds__bxsD4zpU5cLVFbxrPPjY8lttJTIBoCM4IQAvD_BwE","https://www.nykaafashion.com/shoetopia-smart-casual-black-long-casual-boots-for-women/p/18517280?adsource=shopping_india&skuId=18517079&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R17_yEi__KRc9GUibAVPzjZ1&gclid=CjwKCAjw-dfOBhAjEiwAq0RwIxzz-4HfD6BPRjYdf2JCw8CIgY5aPMAJzcooQ7WyovF3AWMoDWENkRoCz1cQAvD_BwE"],
+      "Long Coat + Top + Pants": ["https://www.myntra.com/coats/mast+%26+harbour/mast--harbour-women-solid-longline-tailored-coat/37066611/buy?utm_source=dms_google&utm_medium=dms_pmax_cpc&utm_campaign=dms_google_pmax_cpc_Catchall_ios_SOK&keyword=&matchtype=&target=&placement=&gad_source=1&gad_campaignid=21729182585&gbraid=0AAAAADMPudBvTxVsdRDVj61MwG1vIPCMo&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI4FwY8_otL7qJIGKD8YLjuslPCe07tkVIRrxudmqc1KFArql-tTZfBoCO20QAvD_BwE","https://www.myntra.com/tops/h%26m/hm-off-the-shoulder-top/35738098/buy","https://www.amazon.in/Nermosa-High-Waist-Trousers-Streetwear-Numeric/dp/B0G1Z62667/ref=asc_df_B0G1Z62667?mcid=4d48cd84c46e33208ad5fe7b6060f5e6&tag=googleshopdes-21&linkCode=df0&hvadid=786923063424&hvpos=&hvnetw=g&hvrand=13492593445566043571&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=9299379&hvtargid=pla-2458154093195&hvocijid=13492593445566043571-B0G1Z62667-&hvexpln=0&gad_source=1&th=1&psc=1"],
+      "Sweater + Straight Pants": ["https://www.nykaafashion.com/sugercandy-black-yellow-daisy-cardigan/p/16423559?adsource=shopping_india&skuId=16423179&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R17_yEi__KRc9GUibAVPzjZ1&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI9uSpn6tDk0dOJR7c6kBlXpGQLUMAu8-3Pm6S98-zb30tIqf5qd-CRoCZjIQAvD_BwE","https://www.myntra.com/trousers/kotty/kotty-women-relaxed-fit-high-rise-trousers/35140042/buy?utm_source=dms_google&utm_medium=dms_pmax_cpc&utm_campaign=dms_google_pmax_cpc_Catchall_ios_SOK&keyword=&matchtype=&target=&placement=&gad_source=1&gad_campaignid=21729182585&gbraid=0AAAAADMPudBvTxVsdRDVj61MwG1vIPCMo&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI4eeBI6Za8tbDBfhJW9Zv-9ojew_RkL0R7qgZSHUcQ-p23QDd0WfHxoCeaoQAvD_BwE"],
+      "Layered Kurti + Jeans": ["https://evara.me/products/bulbul-bell-sleeves-kurti-by-evara?variant=45920365314219&country=IN&currency=INR&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gad_source=1&gad_campaignid=23557037033&gbraid=0AAAABBOLaGtmIhexSPk_jctJGh5MM-BPw&gclid=CjwKCAjw-dfOBhAjEiwAq0RwIxdSUBTPAEjFLD6KDEYrov47VK4fC8zyQ-8d4LSo7dAuC70DuPGYZRoCtIQQAvD_BwE","https://www.myntra.com/jeans/h%26m/hm-wide-high-jeans/38295180/buy"],
+      "Black Dress + Heels": ["https://newme.asia/product/black-lettuce-hem-mini-dress-2?srsltid=AfmBOorpRJm91UayRfnkB-RUPdpm8o3YhygCncL0htciIjqyrjAq2IXSfHk","https://www.nykaafashion.com/dollphin-women-black-stilettos-heels/p/25520961?adsource=shopping_india&skuId=25520702&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R17_yEi__KRc9GUibAVPzjZ1&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI0dSKdUbXjjV8Va3gGZoxILwnAgZ-o0aUNnewe9-_XMCRZghLdhr6hoCIZUQAvD_BwE"],
+      "Crop Top + Skirt": ["https://newme.asia/product/brown-solid-cropped-top-4?utm_medium=paid&gad_source=1&utm_source=google&utm_campaign=Shopping_Campaign_Quantacus_Test_NEWME_Feed_CG&gbraid=0AAAAAoy-PQfxE5UHQdvutLZ3YP7urk4Qk&gad_campaignid=23039497815&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI3JY7Cj6xv_1X8lVsQR4_TSe8rZdd0b6j7gI129ItmOiTT2tUDusExoCNTMQAvD_BwE","https://www.myntra.com/skirts/kashian/kashian-high-waist-flared-mini-skirt/33622921/buy?utm_source=dms_google&utm_medium=dms_pmax_cpc&utm_campaign=dms_google_pmax_cpc_Catchall_ios_SOK&keyword=&matchtype=&target=&placement=&gad_source=1&gad_campaignid=21729182585&gbraid=0AAAAADMPudBvTxVsdRDVj61MwG1vIPCMo&gclid=CjwKCAjw-dfOBhAjEiwAq0RwIx4L2eP-ehx0rtz7IEk-2suPq3uRHdhLQxH2MWQlUuvACzhW4wpk-BoCV7kQAvD_BwE"],
+      "Wrap Dress + Heels": ["https://www.nykaafashion.com/styli-womens-brown-wrap-mini-dress/p/15311279","https://www.nykaafashion.com/carlton-london-cream-backstrap-solid-women-mules/p/16300054?adsource=shopping_india&skuId=16300054&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R17_yEi__KRc9GUibAVPzjZ1&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI-DYaEdea-Ce8ZhisCCbR8SwcLVHbGjG2IPNixdoWnjfaZFvb-vllhoCTVAQAvD_BwE"],
+      "A-line Dress + Belt": ["https://www.myntra.com/dresses/aahwan/aahwan-puff-sleeves-sweetheart-neck-ruched-a-line-mini-dress/26461148/buy?utm_source=dms_google&utm_medium=dms_pmax_cpc&utm_campaign=dms_google_pmax_cpc_Catchall_ios_SOK&keyword=&matchtype=&target=&placement=&gad_source=1&gad_campaignid=21729182585&gbraid=0AAAAADMPudBvTxVsdRDVj61MwG1vIPCMo&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI4fTUnGU_szyuRvTxB4wbMgxRjOyiMAJP7IV5zbgRcttVyGByyepxhoCktkQAvD_BwE","https://newme.asia/product/imitation-golden-luxe-waist-chain?srsltid=AfmBOopYA_p2gIDfUhY-1mszqNVcO8TOeXh-gKZ9K-jufd8oSqzO-tvOUNI"],
+      "Jumpsuit + Heels": ["https://www.myntra.com/jumpsuit/here%26now/herenow-women-v-neck-basic-jumpsuit/37459615/buy?utm_source=dms_google&utm_medium=dms_pmax_cpc&utm_campaign=dms_google_pmax_cpc_Catchall_ios_SOK&keyword=&matchtype=&target=&placement=&gad_source=4&gad_campaignid=21729182585&gbraid=0AAAAADMPudB-f_nura3s9XVxX0Syyu0Gc&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI7FHDEV4nJPN9ghNMzuU3zgzYXCwYMiKylulkkgDej6uRn040ljpYxoCHp4QAvD_BwE","https://www.nykaafashion.com/elle-women-wine-pump-heels/p/24261703?adsource=shopping_india&skuId=24261376&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=4&gad_campaignid=22309782468&gbraid=0AAAAAC968R1Wx3ishQ2AElRjDXO9Z-0m-&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI-XREfKP9-8qjQRpAWpyXGPd0UVcR9hCOsNb2k-nMX4WdYF32-eSdBoC2q8QAvD_BwE"],
+      "Jacket + Dress + Boots": ["https://www.myntra.com/coats/here%26now/herenow-women-solid-long-sleeves-spread-collar-coats/37207196/buy?utm_source=dms_google&utm_medium=dms_pmax_cpc&utm_campaign=dms_google_pmax_cpc_Catchall_ios_SOK&keyword=&matchtype=&target=&placement=&gad_source=4&gad_campaignid=21729182585&gbraid=0AAAAADMPudB-f_nura3s9XVxX0Syyu0Gc&gclid=CjwKCAjw-dfOBhAjEiwAq0RwIxe8-r9H2AZcZEY3ACjdyiW9PxvEgsEENeV9jtSHyCVo1dI0UEGJHhoCXo8QAvD_BwE","https://www.nykaafashion.com/dont-be-basic-brown-animal-print-mini-dress/p/26449968?adsource=shopping_india&skuId=26449780&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R17_yEi__KRc9GUibAVPzjZ1&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI3wfqQLPFNnGswJ57LGzSYWKpORC2nsRjAMYuh60AGNTA8eOs3CpYxoCHsgQAvD_BwE","https://www.nykaafashion.com/sherrif-shoes-beige-solid-block-chelsea-boots/p/16231796?adsource=shopping_india&skuId=16231756&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R17_yEi__KRc9GUibAVPzjZ1&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI10OzV3tbCGItgOSlpKyNh7iC9ff6oRmNavFxMuCpSv3sn-MCTryQBoCZUgQAvD_BwE"],
+      "Leather Jacket + Skirt": ["https://newme.asia/product/wine-zip-collar-bomber-jacket?gad_source=1&gad_campaignid=23039497815&utm_campaign=Shopping_Campaign_Quantacus_Test_NEWME_Feed_CG&gclid=CjwKCAjw-dfOBhAjEiwAq0RwIxIlnqm_RQxRnkq-GKT0leWcK01-Qq1t0PQoHu4GWLFOru12kJDDjRoCnsEQAvD_BwE&utm_source=google&utm_medium=paid&gbraid=0AAAAAoy-PQfxE5UHQdvutLZ3YP7urk4Qk","https://www.nykaafashion.com/twenty-dresses-by-nykaa-fashion-women-solid-black-pure-cotton-skort/p/25530662?adsource=shopping_india&skuId=25530375&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R17_yEi__KRc9GUibAVPzjZ1&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI_X8p2T9zKTBBhlsjUJagjCcCUhR5mq5oFQyqEaHug2Z6Kc5MDkegBoCh-MQAvD_BwE"],
+      "Long Coat + Dress": ["https://www.missmosa.in/products/dibella-luxury-trenchcoats?variant=32709947064367&gad_source=1&gad_campaignid=22505596508&gbraid=0AAAAACdIbpFKhy23AfKK8Py3qpmArjxqv&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI1lTnxD344IMb2CUHwuPmfm-6V4le-6XiKGgl_4f-sBp1_QUJJ5epBoCLhMQAvD_BwE"],
+      "Layered Dress + Jacket": ["https://www.nykaafashion.com/freehand-women-fit-and-flared-textured-halter-neck-sleeveless-mini-dress/p/24713706?adsource=shopping_india&skuId=24713578&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R17_yEi__KRc9GUibAVPzjZ1&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI0ZPZOEqMexHpDWaVo1zChGTzwC1OBxs2LWEFtzsS_E1-LeoU1R_wRoC7ggQAvD_BwE","https://newme.asia/product/beige-zip-collar-fur-jacket?gclid=CjwKCAjw-dfOBhAjEiwAq0RwI_tsvaKSmhBaqiut8zvp6wLUfr8-RvHX5ZWzn7SIOz5sEkcRLKJKCBoC3NUQAvD_BwE&utm_campaign=Shopping_Campaign_Quantacus_Test_NEWME_Feed_CG&gbraid=0AAAAAoy-PQfxE5UHQdvutLZ3YP7urk4Qk&utm_medium=paid&utm_source=google&gad_source=1&gad_campaignid=23039497815"],
+      "Jumpsuit + Jacket": ["https://streetstylestore.com/clothing/clothing-super-deals-517/printed-halter-neck-jumpsuit/122416?utm_source=google&utm_medium=cpc&utm_campaign=csd-w-cl-g&srsltid=AfmBOorswO1dSQ1zlwLNMsImQPExB1dJ5044ZY5m5_STeCp3K_iQEmIVtE4","https://www.nykaafashion.com/dolce-crudo-light-blue-collared-full-sleeves-solid-buttoned-denim-jacket/p/13901835?adsource=shopping_india&skuId=13901410&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=Performance_Max_CatchAll_Women&gad_source=1&gad_campaignid=21156798689&gbraid=0AAAAAC968R2RQCTlejzrWN7r2wlmVLdW2&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI1UTsnhn8awVoTBQnzfebRlesXyrFdOJqyfnLhmMuyk5YW_-muZNNBoCbhMQAvD_BwE"],
+      "Denim Shorts + Cute Top": ["https://www.myntra.com/shorts/trendyol/trendyol-women-washed-cotton-denim-shorts/28556484/buy","https://www.myntra.com/tops/femibazaar/femibazaar-checked-halter-neck-cotton-peplum-top/40679485/buy?utm_source=dms_google&utm_medium=dms_pmax_cpc&utm_campaign=dms_google_pmax_cpc_Catchall_ios_SOK&keyword=&matchtype=&target=&placement=&gad_source=1&gad_campaignid=21729182585&gbraid=0AAAAADMPudBvTxVsdRDVj61MwG1vIPCMo&gclid=CjwKCAjw-dfOBhAjEiwAq0RwIyeUTwdI1ILA4lIAeuJ_B9oBz3esv1hO8mpWn2ukSP2JBWrEIX0BRxoCnl4QAvD_BwE"],
+      "Flowy Dress + Sneakers": ["https://newme.asia/product/light-pink-floral-embroidered-maxi-dress?srsltid=AfmBOoqNFzy6fUFZGhX9z0ixgVMJISlKIKSNByrA9ijbf9NNpXkbi0cEME0","https://www.myntra.com/casual-shoes/puma/puma-smashic-womens-comfort-casual-sneakers/39315474/buy?utm_source=dms_google&utm_medium=dms_pmax_cpc&utm_campaign=dms_google_pmax_cpc_Catchall_ios_SOK&keyword=&matchtype=&target=&placement=&gad_source=1&gad_campaignid=21729182585&gbraid=0AAAAADMPudBvTxVsdRDVj61MwG1vIPCMo&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI6HgFjA_4ivSoNaTyKJxWb4t-7W_X5zBroM8XdwQVh631QjSmK-FxRoCav8QAvD_BwE"],
+      "Loose Tshirt + Skirt": ["https://www.nykaafashion.com/izf-red-printed-t-shirt/p/18680973?adsource=shopping_india&skuId=18680619&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=Performance_Max_CatchAll_Women&gad_source=1&gad_campaignid=21156798689&gbraid=0AAAAAC968R2RQCTlejzrWN7r2wlmVLdW2&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI5TWn4F0EHcyIBnTKtEtltwNY0WrS-Yzix4QrWzZJI0TWleMcg-PQRoCQAcQAvD_BwE","https://www.myntra.com/skirts/mango/mango-women-pure-cotton-solid-straight-denim-skirt/19540924/buy?utm_source=dms_google&utm_medium=dms_pmax_cpc&utm_campaign=dms_google_pmax_cpc_Catchall_ios_SOK&keyword=&matchtype=&target=&placement=&gad_source=1&gad_campaignid=21729182585&gbraid=0AAAAADMPudBvTxVsdRDVj61MwG1vIPCMo&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI1qkIn1pFRNEBAVEMMiVM_n62jU4lEXt86-CG0MuikBKSgJeXN5f0hoCcj4QAvD_BwE"],
+      "Sweater + Skirt": ["https://www.nykaafashion.com/cider-knit-v-neck-striped-tie-front-cardigan/p/18707073?adsource=shopping_india&skuId=25693818&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=Performance_Max_CatchAll_Women&gad_source=1&gad_campaignid=21156798689&gbraid=0AAAAAC968R2RQCTlejzrWN7r2wlmVLdW2&gclid=CjwKCAjw-dfOBhAjEiwAq0RwIzfA85WjRajhUz_bPXdr_40eBK9wQmNGnb1HYvPBBMsO1ra_bJ5P9hoCzd0QAvD_BwE","https://www.nykaafashion.com/marie-claire-women-casual-black-solid-mini-skirt/p/5834799?adsource=shopping_india&skuId=5834519&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R17_yEi__KRc9GUibAVPzjZ1&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI8XYn1winrrH3HwuYu10BeB2oHwRnkgdfEnsf_pMA-1O3uZfx16qCRoCd6sQAvD_BwE"],
+      "Jacket + Jeans": ["https://www.myntra.com/jackets/trendyol/trendyol-stand-collar-long-sleeves-crop-bomber-jacket/37466630/buy?utm_source=dms_google&utm_medium=dms_pmax_cpc&utm_campaign=dms_google_pmax_cpc_Catchall_ios_SOK&keyword=&matchtype=&target=&placement=&gad_source=1&gad_campaignid=21729182585&gbraid=0AAAAADMPudBvTxVsdRDVj61MwG1vIPCMo&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI3oler6yCQTRQvVT0WDqpeYWh1lrFPCeUklKHu1hcdT_YrpoFve_mhoCP-EQAvD_BwE","https://www.myntra.com/jeans/off+duty+india/off-duty-india-women-comfort-wide-leg-high-rise-cotton-jeans/24895018/buy?utm_source=dms_google&utm_medium=dms_pmax_cpc&utm_campaign=dms_google_pmax_cpc_Catchall_ios_SOK&keyword=&matchtype=&target=&placement=&gad_source=1&gad_campaignid=21729182585&gbraid=0AAAAADMPudBvTxVsdRDVj61MwG1vIPCMo&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI_5wPZkkFhVe6cENGKC1uTbHrW0lBlhnSyMICzg2hBTBz1IT8ba5sRoCkCUQAvD_BwE"],
+      "Hoodie + Mini Skirt": ["https://www.myntra.com/sweatshirts/dressberry/dressberry-women-off-white-solid-polyester-sweatshirts/36696952/buy?utm_source=dms_google&utm_medium=dms_pmax_cpc&utm_campaign=dms_google_pmax_cpc_Catchall_ios_SOK&keyword=&matchtype=&target=&placement=&gad_source=1&gad_campaignid=21729182585&gbraid=0AAAAADMPudBvTxVsdRDVj61MwG1vIPCMo&gclid=CjwKCAjw-dfOBhAjEiwAq0RwIzyoj6mL7Xel46ZmBr7Bqcboo0EiENDyyYksrTErDSwR1ez4imPqHhoCEygQAvD_BwE","https://newme.asia/product/blue-bodycon-mini-skort?gbraid=0AAAAAoy-PQfxE5UHQdvutLZ3YP7urk4Qk&utm_medium=paid&utm_campaign=Shopping_Campaign_Quantacus_Test_NEWME_Feed_CG&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI2xtxJYUjrwALtDfA-bl3aqs8ymfWnQh0ZseF4v8o83AxFmHjmSGUBoC418QAvD_BwE&gad_campaignid=23039497815&gad_source=1&utm_source=google"],
+      "Long Sweater + Boots": ["https://www.myntra.com/sweaters/dressberry/dressberry-women-self-design-cable-knit-round-neck-long-sleeves-longline-jumper-sweater/37539491/buy?utm_source=dms_google&utm_medium=dms_pmax_cpc&utm_campaign=dms_google_pmax_cpc_Catchall_ios_SOK&keyword=&matchtype=&target=&placement=&gad_source=1&gad_campaignid=21729182585&gbraid=0AAAAADMPudBvTxVsdRDVj61MwG1vIPCMo&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI2R_GJGCdOBdUxHgLEGNPDnzgEMNrsJ_ZbU5T8G8hEwuPzD9fHWOQxoCFuAQAvD_BwE","https://www.nykaafashion.com/twenty-dresses-by-nykaa-fashion-brown-pointed-toe-block-heel-below-knee-boots-for-women/p/21101960?adsource=shopping_india&skuId=21101960&utm_content=ads&utm_source=GooglePaid&utm_medium=PLA&utm_campaign=SSC_Catchall_RB_ATC_MC&gad_source=1&gad_campaignid=22309782468&gbraid=0AAAAAC968R17_yEi__KRc9GUibAVPzjZ1&gclid=CjwKCAjw-dfOBhAjEiwAq0RwI6ijinGB3XQv6XYeo_GDjHTLUgHBrqB8N4wo26Th7BF9TFRUXw8jKBoCaj0QAvD_BwE"],
+      "Layered Dress + Blazer": ["https://littleboxindia.com/products/solid-color-split-button-blazer-mini-dress-without-belt-in-black?gad_source=1&gad_campaignid=18713761356&gbraid=0AAAAAoiHIsd7l1_BIA79ToiNAPLAzjYja&gclid=CjwKCAjw-dfOBhAjEiwAq0RwIxg6Uk0U7Ztb7oYKNodiflrjD-i2RGo85VBSGTc2ED8ktUavTAhxlhoCUQMQAvD_BwE"]
+    };
+
+    data.outfits.forEach(item => {
+      console.log("ITEM:", item);
+      console.log("LINKS VALUE:", links[item]);
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      
+
+      const img = document.createElement("img");
+      img.src = images[item];
+
+      img.onerror = () => {
+      img.src = "https://picsum.photos/300/200";
+      };
+      img.style.width = "100%";
+
+      const title = document.createElement("p");
+      title.innerText = item;
+      const price = document.createElement("p");
+      price.innerText = "₹" + (999 + Math.floor(Math.random() * 2000));
+
+      const brand = document.createElement("p");
+      brand.innerText = "Brand: StyleCo";
+      
+
+      const btnContainer = document.createElement("div");
+      btnContainer.style.marginTop = "10px";
+      btnContainer.style.display = "flex";
+      btnContainer.style.gap = "8px";
+      btnContainer.style.justifyContent = "center";
+      const cleanItem = item.trim();
+      if (Array.isArray(links[item])) {
+        links[cleanItem].forEach((product, index) => {
+
+          const btn = document.createElement("a");
+
+          btn.href = product;
+          btn.target = "_blank";
+
+          if (index === 0) btn.innerText = "Link1";
+          else if (index === 1) btn.innerText = "Link2";
+          else btn.innerText = "Extra";
+
+    // 🔥 better styling
+          btn.style.padding = "6px 10px";
+          btn.style.background = "#000";
+          btn.style.color = "#fff";
+          btn.style.borderRadius = "6px";
+          btn.style.textDecoration = "none";
+          btn.style.fontSize = "12px";
+
+          btnContainer.appendChild(btn);
+        });
+      } else {
+        console.log("FIX LINKS:",item,links[item]);
+      }
+
+
+card.appendChild(img);
+card.appendChild(title);
+
+card.appendChild(btnContainer);
+resultDiv.appendChild(card);
+    });
+
+  });
+
+}
+</script>
